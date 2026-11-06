@@ -19,8 +19,16 @@ if (process.platform === 'win32' && !process.env.DB_USER) {
 } else {
   // En Linux o con credenciales SQL (Tedious puro JS)
   sql = require('mssql');
+  const enDocker = process.env.IN_DOCKER === 'true';
+  const servidor =
+    enDocker && (env.DB_SERVER === 'localhost' || env.DB_SERVER === '127.0.0.1' || env.DB_SERVER === '(local)')
+      ? 'host.docker.internal'
+      : env.DB_SERVER === '(local)'
+        ? 'localhost'
+        : env.DB_SERVER;
+
   config = {
-    server: env.DB_SERVER === '(local)' ? 'localhost' : env.DB_SERVER,
+    server: servidor,
     database: env.DB_NAME,
     port: env.DB_PORT,
     user: env.DB_USER,

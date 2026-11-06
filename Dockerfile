@@ -25,6 +25,7 @@ RUN mkdir -p /usr/src/app/frontend/uploads
 # Variables de entorno por defecto
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV IN_DOCKER=true
 
 # Exponer el puerto de la API
 EXPOSE 3000

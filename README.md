@@ -68,13 +68,20 @@ docker build -t santo-tomas-backend .
 ```
 
 ### Paso 3: Ejecutar el contenedor
-Ejecuta el siguiente comando (incluye `--add-host=host.docker.internal:host-gateway` para que funcione tanto en **Linux** como en **Windows/macOS** al conectarse al SQL Server de tu máquina local):
+Si usas **Linux con firewall `ufw` activo**, habilita primero el puerto `1433/tcp` para permitir que el contenedor se comunique con tu SQL Server local:
+
+```bash
+sudo ufw allow 1433/tcp
+```
+
+Luego ejecuta el contenedor (incluye `--add-host=host.docker.internal:host-gateway` y `-e DB_SERVER=host.docker.internal` para conectarse al SQL Server de tu máquina host tanto en **Linux** como en **Windows/macOS**):
 
 ```bash
 docker run -d \
   --name santo-tomas-api \
   -p 3000:3000 \
   --env-file .env \
+  -e DB_SERVER=host.docker.internal \
   --add-host=host.docker.internal:host-gateway \
   santo-tomas-backend
 ```
